@@ -1,0 +1,13 @@
+{
+    "manifest_version": 3,
+    "name": "EasyExplain",
+    "description": "Select text and get a simple explanation.",
+    "version": "1.0",
+    "permissions": ["contextMenus", "storage", "activeTab", "scripting"],
+    "background": {"service_worker": "background.js"},
+    "action": {"default_popup": "popup.html"},
+    "content_scripts": {
+        "matches": ["<all_urls>"],
+        "js": ["content.js"]
+    }
+}
