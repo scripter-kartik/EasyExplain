@@ -1,16 +1,18 @@
 chrome.runtime.onInstalled.addListener(() => {
     chrome.contextMenus.create({
-        id: "easyExplain",
+        id: "easyexplain",
         title: "Explain simply",
         contexts: ["selection"]
-    });
-});
+    })
+})
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
-    if (info.menuItemId === "easyExplain") {
+    if (info.menuItemId === "easyexplain") {
         chrome.tabs.sendMessage(tab.id, {
-            type: "SELECTED_TEXT",
+            action: "EXPLAIN_TEXT",
             text: info.selectionText
-        });
+        }).catch(() => {
+            console.log("Content script not ready yet.")
+        })
     }
-});
+})
