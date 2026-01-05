@@ -228,7 +228,7 @@ app.listen(PORT, () => {
 EasyExplain Backend Running                    
 http://localhost:${PORT}  
 Available APIs (${availableApis.length}):                              
-${availableApis.map(api => `║    ${apiInfo[api]?.padEnd(45) || api.toUpperCase().padEnd(45)} ║`).join('\n')}
+${availableApis.map(api => `${apiInfo[api]?.padEnd(45) || api.toUpperCase().padEnd(45)}`).join('\n')}
 Priority: Groq → Cohere → Gemini               
 Auto-fallback when one hits limits             
 Up to 14,400 daily requests with Groq!

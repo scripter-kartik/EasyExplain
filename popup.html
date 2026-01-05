@@ -7,9 +7,34 @@
     <link rel="stylesheet" href="popup.css" />
 </head>
 <body>
-    <h2>EasyExplain</h2>
-    <div id="content">
-        <p>Select text and right-click -> Explain simply</p>
+    <div class="header">
+        <h2>⚡ EasyExplain</h2>
+        <div class="api-indicator" id="api-indicator" title="Current API">
+            <span id="api-badge">🤖</span>
+        </div>
+    </div>
+
+    <div id="mode-selector">
+        <label>Style:</label>
+        <select id="mode">
+            <option value="simple">Simple</option>
+            <option value="eli5">ELI5</option>
+            <option value="summary">Summary</option>
+            <option value="detailed">Detailed</option>
+            <option value="bullet">Bullets</option>
+            <option value="technical">Technical</option>
+        </select>
+        <button id="regenerate-btn">🔄</button>
+    </div>
+
+    <div id="original"></div>
+
+    <hr>
+
+    <div id="explanation"></div>
+
+    <div id="actions" style="display: none;">
+        <button id="copy-btn">📋 Copy</button>
     </div>
 
     <script src="popup.js"></script>

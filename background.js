@@ -6,13 +6,11 @@ chrome.runtime.onInstalled.addListener(() => {
     })
 })
 
-chrome.contextMenus.onClicked.addListener((info, tab) => {
-    if (info.menuItemId === "easyexplain") {
-        chrome.tabs.sendMessage(tab.id, {
-            action: "EXPLAIN_TEXT",
-            text: info.selectionText
-        }).catch(() => {
-            console.log("Content script not ready yet.")
+chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+    if (info.menuItemId === "easyexplain" && info.selectionText) {
+        await chrome.storage.local.set({
+            lastText: info.selectionText,
+            timestamp: Date.now()
         })
     }
 })
