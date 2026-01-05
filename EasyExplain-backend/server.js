@@ -34,24 +34,36 @@ if (availableApis.length === 0) {
     process.exit(1);
 }
 
+const languageInstructions = {
+    en: "",
+    es: "Responde en español.",
+    fr: "Réponds en français.",
+    de: "Antworte auf Deutsch.",
+    hi: "हिंदी में जवाब दें।",
+    zh: "用中文回答。"
+};
+
 app.get("/", (req, res) => {
     res.json({
         status: "Server is running!",
         availableApis: availableApis,
-        totalApis: availableApis.length
+        totalApis: availableApis.length,
+        supportedLanguages: ["en", "es", "fr", "de", "hi", "zh"]
     })
 })
 
-async function explainWithGroq(text, mode) {
+async function explainWithGroq(text, mode, language = "en") {
     if (!apis.groq) throw new Error("Groq not configured");
 
+    const langInstruction = languageInstructions[language] || "";
+
     const prompts = {
-        simple: `Explain this in very simple words that a 10-year-old would understand. Keep it brief (3-4 sentences):\n\n${text}`,
-        eli5: `Explain this like I'm 5 years old, using simple analogies:\n\n${text}`,
-        detailed: `Provide a clear, detailed explanation with examples:\n\n${text}`,
-        summary: `Summarize this in 2-3 sentences:\n\n${text}`,
-        technical: `Explain this in technical terms with proper terminology:\n\n${text}`,
-        bullet: `Explain this as 3-5 bullet points:\n\n${text}`
+        simple: `${langInstruction} Explain this in very simple words that a 10-year-old would understand. Keep it brief (3-4 sentences):\n\n${text}`,
+        eli5: `${langInstruction} Explain this like I'm 5 years old, using simple analogies:\n\n${text}`,
+        detailed: `${langInstruction} Provide a clear, detailed explanation with examples:\n\n${text}`,
+        summary: `${langInstruction} Summarize this in 2-3 sentences:\n\n${text}`,
+        technical: `${langInstruction} Explain this in technical terms with proper terminology:\n\n${text}`,
+        bullet: `${langInstruction} Explain this as 3-5 clear bullet points:\n\n${text}`
     };
 
     const completion = await apis.groq.chat.completions.create({
@@ -69,16 +81,18 @@ async function explainWithGroq(text, mode) {
     return completion.choices[0]?.message?.content?.trim() || "No response";
 }
 
-async function explainWithCohere(text, mode) {
+async function explainWithCohere(text, mode, language = "en") {
     if (!apis.cohere) throw new Error("Cohere not configured");
 
+    const langInstruction = languageInstructions[language] || "";
+
     const prompts = {
-        simple: `Explain this in very simple words (3-4 sentences):\n\n${text}`,
-        eli5: `Explain this like I'm 5 years old:\n\n${text}`,
-        detailed: `Provide a detailed explanation with examples:\n\n${text}`,
-        summary: `Summarize this in 2-3 sentences:\n\n${text}`,
-        technical: `Explain this in technical terms:\n\n${text}`,
-        bullet: `List 3-5 key points:\n\n${text}`
+        simple: `${langInstruction} Explain this in very simple words (3-4 sentences):\n\n${text}`,
+        eli5: `${langInstruction} Explain this like I'm 5 years old:\n\n${text}`,
+        detailed: `${langInstruction} Provide a detailed explanation with examples:\n\n${text}`,
+        summary: `${langInstruction} Summarize this in 2-3 sentences:\n\n${text}`,
+        technical: `${langInstruction} Explain this in technical terms:\n\n${text}`,
+        bullet: `${langInstruction} List 3-5 key points:\n\n${text}`
     };
 
     const response = await apis.cohere.generate({
@@ -92,16 +106,18 @@ async function explainWithCohere(text, mode) {
     return response.generations[0].text.trim();
 }
 
-async function explainWithGemini(text, mode) {
+async function explainWithGemini(text, mode, language = "en") {
     if (!apis.gemini) throw new Error("Gemini not configured");
 
+    const langInstruction = languageInstructions[language] || "";
+
     const prompts = {
-        simple: `Explain this briefly in simple words:\n\n${text}`,
-        eli5: `Explain this like I'm 5 years old:\n\n${text}`,
-        detailed: `Provide a detailed explanation:\n\n${text}`,
-        summary: `Summarize this briefly:\n\n${text}`,
-        technical: `Explain this in technical terms:\n\n${text}`,
-        bullet: `List key points:\n\n${text}`
+        simple: `${langInstruction} Explain this briefly in simple words:\n\n${text}`,
+        eli5: `${langInstruction} Explain this like I'm 5 years old:\n\n${text}`,
+        detailed: `${langInstruction} Provide a detailed explanation:\n\n${text}`,
+        summary: `${langInstruction} Summarize this briefly:\n\n${text}`,
+        technical: `${langInstruction} Explain this in technical terms:\n\n${text}`,
+        bullet: `${langInstruction} List key points:\n\n${text}`
     };
 
     const modelPriority = [
@@ -141,7 +157,7 @@ app.post("/explain", async (req, res) => {
     try {
         console.log("Request received:", req.body);
 
-        let { text, mode = "simple" } = req.body;
+        let { text, mode = "simple", language = "en" } = req.body;
 
         if (!text) {
             return res.status(400).json({ error: "Text is required" });
@@ -173,8 +189,8 @@ app.post("/explain", async (req, res) => {
 
         for (const api of availableApiPriority) {
             try {
-                console.log(`${api.emoji} Trying ${api.label}...`);
-                explanation = await api.func(text, mode);
+                console.log(`${api.emoji} Trying ${api.label} (${language})...`);
+                explanation = await api.func(text, mode, language);
                 apiUsed = api.name;
                 console.log(`${api.label} succeeded!`);
                 break; 
@@ -194,7 +210,8 @@ app.post("/explain", async (req, res) => {
         res.json({
             explanation,
             mode,
-            api: apiUsed
+            api: apiUsed,
+            language
         });
 
     } catch (err) {
@@ -232,5 +249,6 @@ ${availableApis.map(api => `${apiInfo[api]?.padEnd(45) || api.toUpperCase().padE
 Priority: Groq → Cohere → Gemini               
 Auto-fallback when one hits limits             
 Up to 14,400 daily requests with Groq!
+Multi-language: EN, ES, FR, DE, HI, ZH
     `)
 })

@@ -8,21 +8,31 @@
 </head>
 <body>
     <div class="header">
-        <h2>⚡ EasyExplain</h2>
+        <div class="header-left">
+            <h2 data-i18n="title">EasyExplain</h2>
+            <div class="language-selector">
+                <button class="lang-btn active" data-lang="en">EN</button>
+                <button class="lang-btn" data-lang="es">ES</button>
+                <button class="lang-btn" data-lang="fr">FR</button>
+                <button class="lang-btn" data-lang="de">DE</button>
+                <button class="lang-btn" data-lang="hi">हि</button>
+                <button class="lang-btn" data-lang="zh">中</button>
+            </div>
+        </div>
         <div class="api-indicator" id="api-indicator" title="Current API">
             <span id="api-badge">🤖</span>
         </div>
     </div>
 
     <div id="mode-selector">
-        <label>Style:</label>
+        <label data-i18n="style">Style:</label>
         <select id="mode">
-            <option value="simple">Simple</option>
-            <option value="eli5">ELI5</option>
-            <option value="summary">Summary</option>
-            <option value="detailed">Detailed</option>
-            <option value="bullet">Bullets</option>
-            <option value="technical">Technical</option>
+            <option value="simple" data-i18n="mode_simple">Simple</option>
+            <option value="eli5" data-i18n="mode_eli5">ELI5</option>
+            <option value="summary" data-i18n="mode_summary">Summary</option>
+            <option value="detailed" data-i18n="mode_detailed">Detailed</option>
+            <option value="bullet" data-i18n="mode_bullet">Bullets</option>
+            <option value="technical" data-i18n="mode_technical">Technical</option>
         </select>
         <button id="regenerate-btn">🔄</button>
     </div>
@@ -34,7 +44,7 @@
     <div id="explanation"></div>
 
     <div id="actions" style="display: none;">
-        <button id="copy-btn">📋 Copy</button>
+        <button id="copy-btn" data-i18n="copy">📋 Copy</button>
     </div>
 
     <script src="popup.js"></script>
