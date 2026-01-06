@@ -1,3 +1,4 @@
+// Translation dictionary
 const translations = {
     en: {
         title: "EasyExplain",
@@ -12,7 +13,7 @@ const translations = {
         copied: "✓ Copied!",
         selected_text: "Selected Text:",
         explanation_label: "Explanation:",
-        generating: "Generating explanation...", /* Removed ⚡ */
+        generating: "Generating explanation...",
         select_instruction: "Select text and right-click → 'Explain simply'",
         error_connect: "Cannot connect to backend",
         error_backend: "Make sure the backend is running:",
@@ -124,29 +125,75 @@ const translations = {
 let currentLang = "en";
 let currentText = null;
 
-chrome.storage.local.get("language", (data) => {
-    if (data.language) {
-        currentLang = data.language;
-        updateLanguage(currentLang);
-    }
-});
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Load saved language preference
+    chrome.storage.local.get("language", (data) => {
+        if (data.language) {
+            currentLang = data.language;
+            updateLanguage(currentLang);
+            // Update active button
+            document.querySelectorAll(".lang-btn").forEach(btn => {
+                if (btn.dataset.lang === currentLang) {
+                    btn.classList.add("active");
+                } else {
+                    btn.classList.remove("active");
+                }
+            });
+        }
+    });
 
-document.querySelectorAll(".lang-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-        const lang = btn.dataset.lang;
-        currentLang = lang;
-        
-        document.querySelectorAll(".lang-btn").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        
-        chrome.storage.local.set({ language: lang });
-        
-        updateLanguage(lang);
-        
+    // Language switcher
+    document.querySelectorAll(".lang-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const lang = btn.dataset.lang;
+            currentLang = lang;
+            
+            document.querySelectorAll(".lang-btn").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            
+            chrome.storage.local.set({ language: lang });
+            
+            updateLanguage(lang);
+            
+            if (currentText) {
+                explainText();
+            }
+        });
+    });
+
+    // Mode change listener
+    document.getElementById("mode").addEventListener("change", () => {
         if (currentText) {
             explainText();
         }
     });
+
+    // Regenerate button
+    document.getElementById("regenerate-btn").addEventListener("click", () => {
+        if (currentText) {
+            explainText();
+        }
+    });
+
+    // Copy button
+    document.getElementById("copy-btn").addEventListener("click", () => {
+        const t = translations[currentLang] || translations.en;
+        const explanation = document.getElementById("explanation").innerText;
+        navigator.clipboard.writeText(explanation).then(() => {
+            const btn = document.getElementById("copy-btn");
+            const originalText = btn.textContent;
+            btn.textContent = t.copied;
+            setTimeout(() => {
+                btn.textContent = originalText;
+            }, 2000);
+        }).catch(err => {
+            console.error("Copy failed:", err);
+        });
+    });
+
+    // Initial load
+    explainText();
 });
 
 function updateLanguage(lang) {
@@ -155,11 +202,7 @@ function updateLanguage(lang) {
     document.querySelectorAll("[data-i18n]").forEach(el => {
         const key = el.dataset.i18n;
         if (t[key]) {
-            if (el.tagName === "OPTION") {
-                el.textContent = t[key];
-            } else {
-                el.textContent = t[key];
-            }
+            el.textContent = t[key];
         }
     });
 }
@@ -321,32 +364,3 @@ async function explainText(mode = null) {
         explanationDiv.innerHTML = `<div style="color: #ff6b6b;">${errorMessage}</div>`;
     }
 }
-
-explainText();
-
-document.getElementById("mode").addEventListener("change", () => {
-    if (currentText) {
-        explainText();
-    }
-});
-
-document.getElementById("regenerate-btn").addEventListener("click", () => {
-    if (currentText) {
-        explainText();
-    }
-});
-
-document.getElementById("copy-btn").addEventListener("click", () => {
-    const t = translations[currentLang] || translations.en;
-    const explanation = document.getElementById("explanation").innerText;
-    navigator.clipboard.writeText(explanation).then(() => {
-        const btn = document.getElementById("copy-btn");
-        const originalText = btn.textContent;
-        btn.textContent = t.copied;
-        setTimeout(() => {
-            btn.textContent = originalText;
-        }, 2000);
-    }).catch(err => {
-        console.error("Copy failed:", err);
-    });
-});
