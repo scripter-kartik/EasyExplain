@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EasyExplain</title>
-    <link rel="stylesheet" href="popup.css" />
+    <link rel="stylesheet" href="popup.css">
 </head>
 <body>
     <div class="header">
         <div class="header-left">
-            <h2 data-i18n="title">EasyExplain</h2>
+            <div class="title-container" data-i18n="title">EasyExplain</div>
             <div class="language-selector">
                 <button class="lang-btn active" data-lang="en">EN</button>
                 <button class="lang-btn" data-lang="es">ES</button>
@@ -19,11 +19,7 @@
                 <button class="lang-btn" data-lang="zh">中</button>
             </div>
         </div>
-        <div class="api-indicator" id="api-indicator" title="Current API">
-            <span id="api-badge">🤖</span>
-        </div>
     </div>
-
     <div id="mode-selector">
         <label data-i18n="style">Style:</label>
         <select id="mode">
@@ -34,19 +30,14 @@
             <option value="bullet" data-i18n="mode_bullet">Bullets</option>
             <option value="technical" data-i18n="mode_technical">Technical</option>
         </select>
-        <button id="regenerate-btn">🔄</button>
+        <button id="regenerate-btn"><img id="regenerate-icon" src="/icons/regenerate.png" alt=""></button>
     </div>
-
     <div id="original"></div>
-
     <hr>
-
     <div id="explanation"></div>
-
     <div id="actions" style="display: none;">
-        <button id="copy-btn" data-i18n="copy">📋 Copy</button>
+        <button id="copy-btn" data-i18n="copy">Copy</button>
     </div>
-
     <script src="popup.js"></script>
 </body>
 </html>
