@@ -1,7 +1,6 @@
-// Translation dictionary
 const translations = {
     en: {
-        title: "EasyExplain",
+        title: '<h1 style="display:inline;margin:0;padding:0;font-size:30px;color:#4db8ff;font-weight:700;">E</h1>asy<h1 style="display:inline;margin:0;padding:0;font-size:30px;color:#4db8ff;font-weight:700;">E</h1>xplain',
         style: "Style:",
         mode_simple: "Simple",
         mode_eli5: "ELI5",
@@ -9,7 +8,7 @@ const translations = {
         mode_detailed: "Detailed",
         mode_bullet: "Bullets",
         mode_technical: "Technical",
-        copy: "📋 Copy",
+        copy: "Copy",
         copied: "✓ Copied!",
         selected_text: "Selected Text:",
         explanation_label: "Explanation:",
@@ -21,7 +20,7 @@ const translations = {
         error_tip: "Tip: Try again in a few minutes."
     },
     es: {
-        title: "ExplicaciónFácil",
+        title: '<h1 style="display:inline;margin:0;padding:0;font-size:20px;color:#4db8ff;font-weight:700;">E</h1>xplicación<h1 style="display:inline;margin:0;padding:0;font-size:20px;color:#4db8ff;font-weight:700;">F</h1>ácil',
         style: "Estilo:",
         mode_simple: "Simple",
         mode_eli5: "Como para niños",
@@ -29,7 +28,7 @@ const translations = {
         mode_detailed: "Detallado",
         mode_bullet: "Puntos",
         mode_technical: "Técnico",
-        copy: "📋 Copiar",
+        copy: "Copiar",
         copied: "✓ ¡Copiado!",
         selected_text: "Texto seleccionado:",
         explanation_label: "Explicación:",
@@ -41,7 +40,7 @@ const translations = {
         error_tip: "Consejo: Inténtalo de nuevo en unos minutos."
     },
     fr: {
-        title: "ExplicationFacile",
+        title: '<h1 style="display:inline;margin:0;padding:0;font-size:20px;color:#4db8ff;font-weight:700;">E</h1>xplication<h1 style="display:inline;margin:0;padding:0;font-size:20px;color:#4db8ff;font-weight:700;">F</h1>acile',
         style: "Style :",
         mode_simple: "Simple",
         mode_eli5: "Pour enfants",
@@ -49,7 +48,7 @@ const translations = {
         mode_detailed: "Détaillé",
         mode_bullet: "Points",
         mode_technical: "Technique",
-        copy: "📋 Copier",
+        copy: "Copier",
         copied: "✓ Copié !",
         selected_text: "Texte sélectionné :",
         explanation_label: "Explication :",
@@ -61,7 +60,7 @@ const translations = {
         error_tip: "Conseil : Réessayez dans quelques minutes."
     },
     de: {
-        title: "EinfachErklärt",
+        title: '<h1 style="display:inline;margin:0;padding:0;font-size:20px;color:#4db8ff;font-weight:700;">E</h1>infach<h1 style="display:inline;margin:0;padding:0;font-size:20px;color:#4db8ff;font-weight:700;">E</h1>rklärt',
         style: "Stil:",
         mode_simple: "Einfach",
         mode_eli5: "Für Kinder",
@@ -69,7 +68,7 @@ const translations = {
         mode_detailed: "Detailliert",
         mode_bullet: "Punkte",
         mode_technical: "Technisch",
-        copy: "📋 Kopieren",
+        copy: "Kopieren",
         copied: "✓ Kopiert!",
         selected_text: "Ausgewählter Text:",
         explanation_label: "Erklärung:",
@@ -81,7 +80,7 @@ const translations = {
         error_tip: "Tipp: Versuchen Sie es in ein paar Minuten erneut."
     },
     hi: {
-        title: "आसानव्याख्या",
+        title: '<h1 style="display:inline;margin:0;padding:0;font-size:20px;color:#4db8ff;font-weight:700;">आ</h1>सानव्याख्या',
         style: "शैली:",
         mode_simple: "सरल",
         mode_eli5: "बच्चों के लिए",
@@ -89,7 +88,7 @@ const translations = {
         mode_detailed: "विस्तृत",
         mode_bullet: "बिंदु",
         mode_technical: "तकनीकी",
-        copy: "📋 कॉपी करें",
+        copy: "कॉपी करें",
         copied: "✓ कॉपी हो गया!",
         selected_text: "चयनित पाठ:",
         explanation_label: "व्याख्या:",
@@ -101,7 +100,7 @@ const translations = {
         error_tip: "सुझाव: कुछ मिनटों में फिर से प्रयास करें।"
     },
     zh: {
-        title: "简单解释",
+        title: '<h1 style="display:inline;margin:0;padding:0;font-size:20px;color:#4db8ff;font-weight:700;">简</h1>单解释',
         style: "风格：",
         mode_simple: "简单",
         mode_eli5: "儿童级",
@@ -109,8 +108,8 @@ const translations = {
         mode_detailed: "详细",
         mode_bullet: "要点",
         mode_technical: "技术",
-        copy: "📋 复制",
-        copied: "✓ 已复制！",
+        copy: "复制",
+        copied: "✓已复制！",
         selected_text: "选中的文本：",
         explanation_label: "解释：",
         generating: "正在生成解释...",
@@ -125,14 +124,11 @@ const translations = {
 let currentLang = "en";
 let currentText = null;
 
-// Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // Load saved language preference
     chrome.storage.local.get("language", (data) => {
         if (data.language) {
             currentLang = data.language;
             updateLanguage(currentLang);
-            // Update active button
             document.querySelectorAll(".lang-btn").forEach(btn => {
                 if (btn.dataset.lang === currentLang) {
                     btn.classList.add("active");
@@ -143,7 +139,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Language switcher
     document.querySelectorAll(".lang-btn").forEach(btn => {
         btn.addEventListener("click", () => {
             const lang = btn.dataset.lang;
@@ -153,7 +148,6 @@ document.addEventListener('DOMContentLoaded', function() {
             btn.classList.add("active");
             
             chrome.storage.local.set({ language: lang });
-            
             updateLanguage(lang);
             
             if (currentText) {
@@ -162,21 +156,22 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Mode change listener
     document.getElementById("mode").addEventListener("change", () => {
         if (currentText) {
             explainText();
         }
     });
 
-    // Regenerate button
     document.getElementById("regenerate-btn").addEventListener("click", () => {
         if (currentText) {
-            explainText();
+            const btn = document.getElementById("regenerate-btn");
+            btn.classList.add("generating");
+            explainText().finally(() => {
+                btn.classList.remove("generating");
+            });
         }
     });
 
-    // Copy button
     document.getElementById("copy-btn").addEventListener("click", () => {
         const t = translations[currentLang] || translations.en;
         const explanation = document.getElementById("explanation").innerText;
@@ -184,15 +179,16 @@ document.addEventListener('DOMContentLoaded', function() {
             const btn = document.getElementById("copy-btn");
             const originalText = btn.textContent;
             btn.textContent = t.copied;
+            btn.classList.add("copied");
             setTimeout(() => {
                 btn.textContent = originalText;
+                btn.classList.remove("copied");
             }, 2000);
         }).catch(err => {
             console.error("Copy failed:", err);
         });
     });
 
-    // Initial load
     explainText();
 });
 
@@ -202,7 +198,11 @@ function updateLanguage(lang) {
     document.querySelectorAll("[data-i18n]").forEach(el => {
         const key = el.dataset.i18n;
         if (t[key]) {
-            el.textContent = t[key];
+            if (key === 'title') {
+                el.innerHTML = t[key];
+            } else {
+                el.textContent = t[key];
+            }
         }
     });
 }
@@ -258,7 +258,6 @@ async function explainText(mode = null) {
     const explanationDiv = document.getElementById("explanation");
     const actionsDiv = document.getElementById("actions");
     const modeSelect = document.getElementById("mode");
-    const apiBadge = document.getElementById("api-badge");
 
     if (!mode) {
         mode = modeSelect.value;
@@ -275,14 +274,10 @@ async function explainText(mode = null) {
         }
 
         currentText = data.lastText;
-
         originalDiv.innerHTML = `<strong>${t.selected_text}</strong><br>${data.lastText}`;
-
         explanationDiv.innerHTML = `<strong>${t.generating}</strong>`;
         explanationDiv.classList.add("loading");
         actionsDiv.style.display = "none";
-
-        console.log("Sending request to backend...");
 
         const res = await fetch("http://localhost:3000/explain", {
             method: "POST",
@@ -296,28 +291,13 @@ async function explainText(mode = null) {
             })
         });
 
-        console.log("Response status:", res.status);
-
         if (!res.ok) {
             const errorData = await res.json().catch(() => ({}));
             throw new Error(errorData.details || errorData.error || `Server error: ${res.status}`);
         }
 
         const result = await res.json();
-        console.log("Success:", result);
-
         explanationDiv.classList.remove("loading");
-
-        const apiConfig = {
-            groq: { emoji: "⭐", name: "Groq (14k/day)", class: "groq" },
-            cohere: { emoji: "🟣", name: "Cohere (5k/month)", class: "cohere" },
-            gemini: { emoji: "🔷", name: "Gemini (1.5k/day)", class: "gemini" }
-        };
-
-        const config = apiConfig[result.api] || { name: result.api, class: "" };
-        apiBadge.textContent = config.emoji;
-        apiBadge.className = config.class;
-        apiBadge.title = config.name;
 
         const modeNames = {
             simple: t.mode_simple,
@@ -336,27 +316,20 @@ async function explainText(mode = null) {
             formattedExplanation = formatBulletPoints(result.explanation);
         }
 
-        explanationDiv.innerHTML =
-            `<strong>${t.explanation_label}${modeBadge}${apiLabel}</strong><br>${formattedExplanation}`;
-
+        explanationDiv.innerHTML = `<strong>${t.explanation_label}${modeBadge}${apiLabel}</strong><br>${formattedExplanation}`;
         actionsDiv.style.display = "block";
 
     } catch (error) {
         console.error("Full error:", error);
-
         explanationDiv.classList.remove("loading");
         actionsDiv.style.display = "none";
 
         let errorMessage = t.error_connect;
 
         if (error.message.includes("Failed to fetch") || error.message.includes("NetworkError")) {
-            errorMessage = `<strong>${t.error_connect}</strong><br><br>
-                ${t.error_backend}<br>
-                <code style="background: #0f1624; padding: 4px 8px; border-radius: 4px; display: block; margin-top: 8px;">node server.js</code>`;
+            errorMessage = `<strong>${t.error_connect}</strong><br><br>${t.error_backend}<br><code style="background: #0f1624; padding: 4px 8px; border-radius: 4px; display: block; margin-top: 8px;">node server.js</code>`;
         } else if (error.message.includes("rate limit") || error.message.includes("All APIs")) {
-            errorMessage = `${t.error_rate_limit}<br><br>
-                ${error.message}<br><br>
-                <small>${t.error_tip}</small>`;
+            errorMessage = `${t.error_rate_limit}<br><br>${error.message}<br><br><small>${t.error_tip}</small>`;
         } else {
             errorMessage = `<strong>Error:</strong><br>${error.message}`;
         }
