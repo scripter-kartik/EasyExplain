@@ -67,13 +67,11 @@ async function explainWithGroq(text, mode, language = "en") {
     };
 
     const completion = await apis.groq.chat.completions.create({
-        messages: [
-            {
-                role: "user",
-                content: prompts[mode] || prompts.simple
-            }
-        ],
-        model: "llama-3.3-70b-versatile", 
+        messages: [{
+            role: "user",
+            content: prompts[mode] || prompts.simple
+        }],
+        model: "llama-3.3-70b-versatile",
         temperature: 0.5,
         max_tokens: mode === "detailed" ? 300 : 200,
     });
@@ -132,20 +130,14 @@ async function explainWithGemini(text, mode, language = "en") {
     for (const modelName of modelPriority) {
         try {
             const model = apis.gemini.getGenerativeModel({ model: modelName });
-
-            const result = await model.generateContent(
-                prompts[mode] || prompts.simple,
-                {
-                    maxOutputTokens: mode === "detailed" ? 250 : 150,
-                    temperature: 0.5,
-                }
-            );
-
+            const result = await model.generateContent(prompts[mode] || prompts.simple, {
+                maxOutputTokens: mode === "detailed" ? 250 : 150,
+                temperature: 0.5,
+            });
             return result.response.text().trim();
-
         } catch (err) {
             lastError = err;
-            if (err.status === 429) continue; 
+            if (err.status === 429) continue;
             throw err;
         }
     }
@@ -193,12 +185,10 @@ app.post("/explain", async (req, res) => {
                 explanation = await api.func(text, mode, language);
                 apiUsed = api.name;
                 console.log(`${api.label} succeeded!`);
-                break; 
-
+                break;
             } catch (err) {
                 console.log(`${api.label} failed: ${err.message.substring(0, 80)}...`);
                 lastError = err;
-
                 continue;
             }
         }
