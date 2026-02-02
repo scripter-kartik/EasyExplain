@@ -1,3 +1,4 @@
+// background.js
 chrome.runtime.onInstalled.addListener(() => {
     chrome.contextMenus.create({
         id: "easyexplain",
